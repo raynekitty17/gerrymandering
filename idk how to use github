@@ -1,0 +1,48 @@
+from sympy import divisors
+from math import sqrt
+from math import ceil
+
+score = lambda x,y,c : ceil((x+c-1)/c)*ceil((y+c-1)/c)
+divs = lambda n : [i for i in divisors(n) if i <= sqrt(n)]
+
+def gerry(n,c=2):   # solutions for n cells with c colors (c = 2 if unspecified)
+    g = [n,[]]
+    for d in divs(n):
+        a = d
+        b = n//d
+        s = score(a,b,c)
+        if s < g[0]:
+            g[0] = s
+            g[1] = [(a,b)]
+        elif s == g[0]:
+            g[1].append((a,b))
+    return g
+
+def gerryFormatted(n,c=2):
+    g = gerry(n,c)
+    print(f'{n} cells with {c} colors')
+    print('solutions: '+str(g[1])[1:-1])
+    print(f'districts: {g[0]}')
+    
+    
+def findExs(k):   # find all n < k with two solutions excluding (x,2y)-(2x,y) and (x,4y)-(4x,y) pairs
+    l = []
+    n = 0
+    while n < k:
+        n += 16
+        g = gerry(n,2)
+        if len(g[1]) == 2:
+            if 4*g[1][0][0] not in g[1][1]:
+                print(f'{n} - {g[1][0]}, {g[1][1]}')
+
+def findExsInRange(k,lower,upper):   # find all exceptional cases < k (a,b)-(c,d) where lower < a/d < upper
+    l = []
+    n = 0
+    while n < k:
+        n += 16
+        g = gerry(n,2)
+        if len(g[1]) == 2:
+            a = g[1][1][1]
+            b = g[1][0][0]
+            if lower <= a/b <= upper:
+                print(f'{n} - {g[1][0]}, {g[1][1]} - {a}/{b} ~ {round(a/b,5)}')
