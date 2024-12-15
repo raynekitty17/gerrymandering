@@ -26,7 +26,6 @@ def gerryFormatted(n,c=2):
     
     
 def findExs(k):   # find all n < k with two solutions excluding (x,2y)-(2x,y) and (x,4y)-(4x,y) pairs
-    l = []
     n = 0
     while n < k:
         n += 16
@@ -36,7 +35,6 @@ def findExs(k):   # find all n < k with two solutions excluding (x,2y)-(2x,y) an
                 print(f'{n} - {g[1][0]}, {g[1][1]}')
 
 def findExsInRange(k,lower,upper):   # find all exceptional cases < k (a,b)-(c,d) where lower < a/d < upper
-    l = []
     n = 0
     while n < k:
         n += 16
